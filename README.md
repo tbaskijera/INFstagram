@@ -1,2 +1,2 @@
 # INFstagram
-Web aplikacija, klon Instagrama
+Web aplikacija
