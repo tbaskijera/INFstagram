@@ -13,6 +13,7 @@ class Korisnik(models.Model):
 
 class Profil(models.Model):
     korisnicko_ime = models.CharField(max_length = 20)
+    lozinka = models.CharField(max_length= 30)
     bio = models.CharField(max_length = 120)
     slika_profil = models.ImageField()
     korisnik = models.ForeignKey("Korisnik", on_delete = models.CASCADE)
