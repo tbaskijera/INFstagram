@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models.deletion import CASCADE
-from django.db.models.fields.related import ForeignKey
 
 # Create your models here.
 
@@ -24,7 +22,7 @@ class Profil(models.Model):
 
 
 class Objava(models.Model):
-    profil_objava = models.ForeignKey("Profil", on_delete = CASCADE)
+    profil_objava = models.ForeignKey("Profil", on_delete = models.CASCADE)
     slika_objava = models.ImageField()
     opis_objava = models.CharField(max_length = 500)
     vrijeme_objava = models.DateTimeField()
