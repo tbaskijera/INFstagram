@@ -9,7 +9,7 @@ from django.contrib import messages
 def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
 
-def homepage2(request):
+def registration(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
