@@ -22,7 +22,7 @@ def registration(request):
 	form = NewUserForm()
 	return render (request, 'register.html', context={"register_form":form})
 
-def login(request):
+def loginuser(request):
 	if request.method == "POST":
 		form = AuthenticationForm(request, data=request.POST)
 		if form.is_valid():
@@ -39,3 +39,5 @@ def login(request):
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request, 'login.html' , context={"login_form":form})
+
+
