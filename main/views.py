@@ -12,7 +12,7 @@ from django.db import transaction
 # Create your views here.
 
 
-def homepage():
+def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
 
 def profil(request):

@@ -23,7 +23,7 @@ class Korisnik(models.Model):
 class Profil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
     bio = models.CharField(max_length = 120, null=True)
-    slika_profil = models.ImageField(upload_to='profile_pics', default='main/default_avatar.png')
+    slika_profil = models.ImageField(upload_to='static/image', default='main/default_avatar.png')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

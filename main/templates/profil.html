@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    
+
+{% load static %}
+<img src="{% static 'images/index.png'%}" alt="">
         {% if user.is_authenticated %}
             <p>user je: {{user.get_username}}</p>
             {% for p in lista_nova %}
                 {% if p.user == user%}
                     logiran je {{p.user }}<br>
                     id: {{p.id}}<br>
+                    <img src="{{ p.slika_profil.url }}" alt="">
                 {% endif%}
             {% endfor %}
         {% endif %}
 
-
+        
 
     <p> Početak for petlje </p>
     <ul>
@@ -21,7 +24,6 @@
                 id: {{ p.id }}<br>
                 user: {{p.user}}<br>
                 slika: {{p.slika_profil}}<br>
-                <!--<img src="{#{# p.slika_profil.url #}#}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />-->
                 {% if p.user == ivo45 %}
                     <p>7 je user id</p>
                 {% endif%}
