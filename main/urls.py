@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as authViews 
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = 'main'
 
@@ -12,4 +14,4 @@ urlpatterns = [
    	path('changepassword/done', views.PasswordChangeDone, name='change_password_done'),
     path('updateprofile', views.update_profile, name='updateprofile'),
     path('logout/', authViews.LogoutView.as_view(), {'next_page' : 'index'}, name='logout'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
