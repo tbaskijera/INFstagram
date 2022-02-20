@@ -126,3 +126,5 @@ STATIC_ROOT = os.path.join(BASE_DIR,"static_files")
 STATIC_URL = '/profile_pics/'
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+LOGOUT_REDIRECT_URL = '/'

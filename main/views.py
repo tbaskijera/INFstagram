@@ -11,10 +11,13 @@ from django.contrib.auth import update_session_auth_hash
 from django.db import transaction
 # Create your views here.
 
+from django.contrib.auth import logout
+
+
 
 def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
-
+	
 def profil(request):
 	lista_nova = Profil.objects.all()
 	context = {'lista_nova': lista_nova}
@@ -87,3 +90,8 @@ def update_profile(request):
         profile_form = ProfileForm(instance=request.user.profil)
     return render(request, 'edit_profile.html', {#'user_form': user_form, 
 	'profile_form': profile_form })
+
+
+def logout_view(request):
+	logout(request)
+	return loginuser(request)
