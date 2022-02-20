@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import *
-
+from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
 def homepage(request):
@@ -42,3 +42,26 @@ def loginuser(request):
 			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request, 'login.html' , context={"login_form":form})
+
+@login_required
+def PasswordChange(request):
+	user = request.user
+	if request.method == 'POST':
+		form = ChangePasswordForm(request.POST)
+		if form.is_valid():
+			new_password = form.cleaned_data.get('new_password')
+			user.set_password(new_password)
+			user.save()
+			update_session_auth_hash(request, user)
+			return redirect('change_password_done')
+	else:
+		form = ChangePasswordForm(instance=user)
+
+	context = {
+		'form':form,
+	}
+
+	return render(request, 'change_password.html', context)
+
+def PasswordChangeDone(request):
+	return render(request, 'change_password_successful.html')
