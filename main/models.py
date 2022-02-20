@@ -2,10 +2,15 @@ from django.db import models
 from PIL import Image
 import os
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
+#ovo se ne koristi i dalje msm ovaj model
 class Korisnik(models.Model):
+    
     ime = models.CharField(max_length = 30)
     prezime = models.CharField(max_length = 70)
     datum_rodenja = models.DateField()
@@ -15,14 +20,21 @@ class Korisnik(models.Model):
     
 
 class Profil(models.Model):
-    korisnicko_ime = models.CharField(max_length = 20)
-    lozinka = models.CharField(max_length= 30)
-    bio = models.CharField(max_length = 120)
-    slika_profil = models.ImageField()
-    korisnik = models.ForeignKey("Korisnik", on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    bio = models.CharField(max_length = 120, null=True)
+    slika_profil = models.ImageField(upload_to='profile_pics')
 
     def __str__(self):
-        return self.korisnicko_ime
+        return self.user
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profil.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profil.save()
 
 
 class Objava(models.Model):

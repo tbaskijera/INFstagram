@@ -47,3 +47,8 @@ class ChangePasswordForm(forms.ModelForm):
 		if new_password != confirm_password:
 			self._errors['new_password'] =self.error_class(['Passwords do not match.'])
 		return self.cleaned_data
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profil
+        fields = ('bio', 'slika_profil')

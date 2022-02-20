@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.contrib.auth import update_session_auth_hash
+from django.db import transaction
 # Create your views here.
 
 def homepage(request):
@@ -65,3 +66,24 @@ def PasswordChange(request):
 
 def PasswordChangeDone(request):
 	return render(request, 'change_password_successful.html')
+
+
+@login_required
+@transaction.atomic
+def update_profile(request):
+    if request.method == 'POST':
+        #user_form = NewUserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profil)
+        if profile_form.is_valid(): # && user_form.is_valid()
+            profile_form.save()
+            messages.success(request, ('Your profile was successfully updated!'))
+            return redirect('/homepage')
+        else:
+            messages.error(request, ('Please correct the error below.'))
+    else:
+        #user_form = NewUserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profil)
+    return render(request, 'edit_profile.html', {
+        #'user_form': user_form,
+        'profile_form': profile_form
+    })
