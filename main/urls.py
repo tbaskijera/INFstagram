@@ -13,6 +13,6 @@ urlpatterns = [
     path('changepassword/', views.PasswordChange, name='change_password'),
    	path('changepassword/done', views.PasswordChangeDone, name='change_password_done'),
     path('updateprofile', views.update_profile, name='updateprofile'),
-    path('logout/', authViews.LogoutView.as_view(), {'next_page' : 'index'}, name='logout'),
+    path('logout/', views.logout, name='logout_view'),
     path('profil/', views.profil, name='profil'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
