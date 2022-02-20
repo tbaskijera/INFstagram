@@ -10,7 +10,7 @@
   <body>
     <h1>INFstagram</h1>
     {% if user.is_authenticated %}
-        <p>Prijavljeni ste kao <strong><i>{{ user.get_username }}</i></strong></p> 
+        <p>Prijavljeni ste kao <strong><i>@{{ user.get_username }}</i></strong></p> 
         <button class="btn btn-light" type="submit"><a href="/logout">Odjava</a></button>
     {% endif %}
         <div class="title">

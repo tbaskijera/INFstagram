@@ -11,8 +11,14 @@ from django.contrib.auth import update_session_auth_hash
 from django.db import transaction
 # Create your views here.
 
-def homepage(request):
+
+def homepage():
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
+
+def profil(request):
+	lista_nova = Profil.objects.all()
+	context = {'lista_nova': lista_nova}
+	return render(request, 'profil.html', context=context)
 
 def registration(request):
 	if request.method == "POST":
@@ -36,7 +42,8 @@ def loginuser(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, "You are now logged in as {username}.")
-				return redirect("main:homepage")
+				#return redirect("main:homepage")
+				return redirect("main:profil")
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
@@ -57,12 +64,7 @@ def PasswordChange(request):
 			return redirect('change_password_done')
 	else:
 		form = ChangePasswordForm(instance=user)
-
-	context = {
-		'form':form,
-	}
-
-	return render(request, 'change_password.html', context)
+	return render(request, 'change_password.html', context = {'change_form':form})
 
 def PasswordChangeDone(request):
 	return render(request, 'change_password_successful.html')
@@ -83,7 +85,5 @@ def update_profile(request):
     else:
         #user_form = NewUserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profil)
-    return render(request, 'edit_profile.html', {
-        #'user_form': user_form,
-        'profile_form': profile_form
-    })
+    return render(request, 'edit_profile.html', {#'user_form': user_form, 
+	'profile_form': profile_form })
