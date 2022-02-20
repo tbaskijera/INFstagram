@@ -1,10 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import  render, redirect
-from .forms import NewUserForm
+from .forms import *
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from .models import *
+
 # Create your views here.
 
 def homepage(request):
@@ -40,4 +43,22 @@ def loginuser(request):
 	form = AuthenticationForm()
 	return render(request, 'login.html' , context={"login_form":form})
 
+def EditProfile(request):
+	profile = Profil.objects.get(user__id=request.user.username)
+	BASE_WIDTH = 400
 
+	if request.method == 'POST':
+		form = EditProfileForm(request.POST, request.FILES)
+		if form.is_valid():
+			profile.picture = form.cleaned_data.get('picture')
+			profile.bio = form.cleaned_data.get('profile_info')
+			profile.save()
+			return redirect('homepage')
+	else:
+		form = EditProfileForm()
+
+	context = {
+		'form':form,
+	}
+
+	return render(request, 'edit_profile.html', context)

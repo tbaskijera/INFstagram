@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import *
 
 
 # Create your forms here.
@@ -21,3 +22,15 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+class EditProfileForm(forms.ModelForm):
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+	picture = forms.ImageField(required=False)
+	bio = forms.CharField(widget=forms.TextInput(), max_length=260, required=False)
+
+	def __str__(self):
+		return self.user.username
+
+	class Meta:
+		model = Profil
+		fields = ('picture', 'bio')
