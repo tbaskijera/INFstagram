@@ -24,6 +24,15 @@ class Profil(models.Model):
     bio = models.CharField(max_length = 120, null=True)
     slika_profil = models.ImageField(upload_to='profile_pics')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.slika_profil.path)
+        if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.slika_profil.path)
+
     def __str__(self):
         return self.user
 
