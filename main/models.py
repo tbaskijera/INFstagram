@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from PIL import Image
 import os
@@ -20,9 +21,9 @@ class Korisnik(models.Model):
     
 
 class Profil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
     bio = models.CharField(max_length = 120, null=True)
-    slika_profil = models.ImageField(upload_to='profile_pics')
+    slika_profil = models.ImageField(upload_to='profile_pics', default='main/default_avatar.png')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
