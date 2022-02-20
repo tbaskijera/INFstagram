@@ -23,11 +23,6 @@ class Migration(migrations.Migration):
             model_name='profil',
             name='slika_profil',
         ),
-        migrations.AddField(
-            model_name='profil',
-            name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to=main.models.user_directory_path, verbose_name='Picture'),
-        ),
         migrations.AlterField(
             model_name='profil',
             name='bio',

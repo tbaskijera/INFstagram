@@ -10,27 +10,18 @@ class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
 	name = forms.CharField()
 	surname = forms.CharField()
-	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}) )                                           
+	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))
+	#profile_picture = forms.ImageField(upload_to = "images/")      
+	bio = forms.CharField( max_length = "260", widget=forms.Textarea(attrs={'cols': 40, 'rows': 6}))                                     
 
 	class Meta:
 		model = User
-		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
-
+		fields = ("username", "name", "surname", "date_field", "email", "bio", "password1", "password2")
+		# maknut "profile_picture"
+		
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
 		user.email = self.cleaned_data['email']
 		if commit:
 			user.save()
 		return user
-
-class EditProfileForm(forms.ModelForm):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-	picture = forms.ImageField(required=False)
-	bio = forms.CharField(widget=forms.TextInput(), max_length=260, required=False)
-
-	def __str__(self):
-		return self.user.username
-
-	class Meta:
-		model = Profil
-		fields = ('picture', 'bio')

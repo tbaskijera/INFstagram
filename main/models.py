@@ -3,15 +3,6 @@ from PIL import Image
 import os
 from django.conf import settings
 
-def user_directory_path(instance, filename):
-        # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-        profile_pic_name = 'user_{0}/profile.jpg'.format(instance.user.id)
-        full_path = os.path.join(settings.MEDIA_ROOT, profile_pic_name)
-
-        if os.path.exists(full_path):
-            os.remove(full_path)
-
-        return profile_pic_name
 # Create your models here.
 
 class Korisnik(models.Model):
@@ -24,18 +15,14 @@ class Korisnik(models.Model):
     
 
 class Profil(models.Model):
-    picture = models.ImageField(upload_to=user_directory_path, blank=True, null=True, verbose_name='Picture')
-    bio = models.TextField(max_length=150, null=True, blank=True)
+    korisnicko_ime = models.CharField(max_length = 20)
+    lozinka = models.CharField(max_length= 30)
+    bio = models.CharField(max_length = 120)
+    slika_profil = models.ImageField()
+    korisnik = models.ForeignKey("Korisnik", on_delete = models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-	    
-        SIZE = 250, 250
-
-        if self.picture:
-            pic = Image.open(self.picture.path)
-            pic.thumbnail(SIZE, Image.LANCZOS)
-            pic.save(self.picture.path)
+    def __str__(self):
+        return self.korisnicko_ime
 
 
 class Objava(models.Model):
