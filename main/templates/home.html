@@ -7,21 +7,34 @@
             <p>user je: {{user.get_username}}</p>
         {% endif %}
 
-        {% for p in lista_objava %}
-                <!--Profil: {#{# p.profil_objava #}#}<br>-->
-                slika: {{ p.slika_objava }}<br>
-                <img src="{{ p.slika_objava.url }}" alt="objava"><br>
-                opis: {{p.opis_objava}}<br>
-                vrijeme: {{o.vrijeme_objava}}<br>
-                lajk: {{p.lajk_objava}}<br><br><br>
-        {% endfor %}
+<!-- usporeduje se:
+           (Objava)      (Profil) (Profil) (User)   (User)
+        profil_objava_id -> id -> user_id -> id -> username
+npr.         12             12       13      12   korisnik100
+-->
+        {% for o in lista_objava %}
+                {% for p in lista_profil %}
+                        {% if o.profil_objava_id == p.id%}
+                        {% for u in lista_useri %}
+                                {% if p.user_id == u.id%}
+                                        id_profila je: {{p.id }} <br>
+                                        id usera je: {{u.id}}<br>
+                                        username je: {{u.username}}<br>
+                                        objava id : {{o.id}}<br>
 
-        {% for p in lista_profil %}
-                {% if p.user == user%}
-                    logiran je {{p.user }}<br>
-                    id: {{p.id}}<br>
-                    <img src="{{ p.slika_profil.url }}" alt="">
-                {% endif%}
-            {% endfor %}
+
+
+                                        Profil: {{ o.profil_objava_id }}<br>
+                                        slika: {{ o.slika_objava }}<br>
+                                        <img src="{{ o.slika_objava.url }}" alt="objava"><br>
+                                        opis: {{o.opis_objava}}<br>
+                                        vrijeme: {{o.vrijeme_objava}}<br>
+                                        lajk: {{o.lajk_objava}}<br><br><br>
+                                        <br>
+                                {% endif%}
+                        {% endfor %}
+                        {% endif%}        
+                {% endfor %}
+        {% endfor %}
 
 {% endblock %}

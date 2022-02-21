@@ -140,7 +140,9 @@ def home(request):
 	#lista_nova = Objava.objects.all()
 	# - je za postavljanje objava od najnovijih do najstarijih
 	lista_objava = Objava.objects.order_by('-vrijeme_objava')
+	#lista_objava = Objava.objects.all()
 	lista_profil = Profil.objects.all()
-	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil}
+	lista_useri = User.objects.all()
+	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil, 'lista_useri': lista_useri}
 	return render(request, 'home.html', context=context)
 
