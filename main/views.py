@@ -94,8 +94,3 @@ def update_profile(request):
         profile_form = ProfileForm(instance=request.user.profil)
     return render(request, 'edit_profile.html', {#'user_form': user_form, 
 	'profile_form': profile_form })
-
-
-def logout_view(request):
-	logout(request)
-	return HttpResponseRedirect("/login")
