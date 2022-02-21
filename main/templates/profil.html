@@ -2,7 +2,7 @@
 {% block content %}
 
 {% load static %}
-<img src="{% static 'images/index.png'%}" alt="">
+<!--<img src="{% static 'images/index.png'%}" alt="">-->
         {% if user.is_authenticated %}
             <p>user je: {{user.get_username}}</p>
             {% for p in lista_nova %}
@@ -12,6 +12,8 @@
                     <img src="{{ p.slika_profil.url }}" alt="">
                 {% endif%}
             {% endfor %}
+            <!-- to je dodano -->
+            <button class="btn btn-light" type="submit"><a href="/novaobjava">Nova objava</a></button>
         {% endif %}
 
         

@@ -48,11 +48,21 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Objava(models.Model):
-    profil_objava = models.ForeignKey("Profil", on_delete = models.CASCADE)
-    slika_objava = models.ImageField()
+    #profil_objava = models.ForeignKey("Profil", on_delete = models.CASCADE)
+    #profil_objava = models.ForeignKey(User, on_delete=models.CASCADE)
+    slika_objava = models.ImageField(upload_to='static/image')
     opis_objava = models.CharField(max_length = 500)
-    vrijeme_objava = models.DateTimeField()
-    lajk_objava = models.IntegerField()
+    vrijeme_objava = models.DateTimeField(null=True)
+    lajk_objava = models.IntegerField(null=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.slika_objava.path)
+        if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+        if img.height > 500 or img.width > 500:
+            output_size = (500, 500)
+            img.thumbnail(output_size)
+            img.save(self.slika_objava.path)
     
     def __str__(self):
         return self.opis_objava

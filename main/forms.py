@@ -52,3 +52,15 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profil
         fields = ('bio', 'slika_profil')
+
+
+
+
+
+
+class NewPostForm(forms.ModelForm):
+	# slika_objava = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=True)
+	# opis_objava = forms.CharField(widget=forms.Textarea(attrs={'class': 'input is-medium'}), required=True)
+	class Meta:
+		model = Objava
+		fields = ('slika_objava', 'opis_objava')

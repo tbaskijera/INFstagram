@@ -1,9 +1,9 @@
+from datetime import date, datetime
 from django.http import HttpResponse
 from django.shortcuts import  render, redirect, HttpResponseRedirect
 from .forms import *
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -94,3 +94,37 @@ def update_profile(request):
         profile_form = ProfileForm(instance=request.user.profil)
     return render(request, 'edit_profile.html', {#'user_form': user_form, 
 	'profile_form': profile_form })
+
+
+
+
+
+def NewPost(request):
+	user = request.user
+	files_objs = []
+
+	if request.method == 'POST':
+		form = NewPostForm(request.POST, request.FILES, instance=request.user.profil)
+		if form.is_valid():
+			files = request.FILES.getlist('slika_objava')
+			caption = form.cleaned_data.get('opis_objava')
+			time = datetime.now()
+			like = 10
+			
+			for file in files:
+				file_instance = Objava(slika_objava=file,  vrijeme_objava=time, lajk_objava=like)
+				# profil_objava=user,
+				file_instance.save()
+				files_objs.append(file_instance)
+
+			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, lajk_objava=like)
+			# profil_objava=user,
+			p.content.set(files_objs)
+			p.save()
+			return redirect('main:homepage')
+	else:
+		form = NewPostForm(instance=request.user.profil)
+
+	context = {'form':form}
+
+	return render(request, 'nova_objava.html', context)
