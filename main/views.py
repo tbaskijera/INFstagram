@@ -17,7 +17,8 @@ from django.contrib.auth import logout
 
 def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
-	
+
+@login_required
 def profil(request):
 	lista_nova = Profil.objects.all()
 	context = {'lista_nova': lista_nova}
