@@ -48,7 +48,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Objava(models.Model):
-    #profil_objava = models.ForeignKey("Profil", on_delete = models.CASCADE)
+    profil_objava = models.ForeignKey(Profil, on_delete = models.CASCADE)
     #profil_objava = models.ForeignKey(User, on_delete=models.CASCADE)
     slika_objava = models.ImageField(upload_to='static/image')
     opis_objava = models.CharField(max_length = 500)

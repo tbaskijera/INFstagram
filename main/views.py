@@ -109,19 +109,23 @@ def NewPost(request):
 		if form.is_valid():
 			files = request.FILES.getlist('slika_objava')
 			caption = form.cleaned_data.get('opis_objava')
+			
 			time = datetime.now()
 			like = 10
+			profilic = request.user.profil.id
+			print(profilic)
 			
 			for file in files:
-				file_instance = Objava(slika_objava=file,  vrijeme_objava=time, lajk_objava=like)
-				# profil_objava=user,
-				file_instance.save()
+				file_instance = Objava(slika_objava=file,  vrijeme_objava=time, lajk_objava=like, profil_objava_id = profilic )
+				#profil_objava=user,
+				#file_instance.save()
 				files_objs.append(file_instance)
 
-			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, lajk_objava=like)
-			# profil_objava=user,
-			p.content.set(files_objs)
-			p.save()
+			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, lajk_objava=like, profil_objava_id = profilic)
+			#profil_objava=user,
+			#p.content.set(files_objs)
+			print(p)
+			p[0].save()
 			return redirect('main:homepage')
 	else:
 		form = NewPostForm(instance=request.user.profil)
