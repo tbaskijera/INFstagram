@@ -169,5 +169,5 @@ def novikomentar(request, objava_id):
                    'new_comment': komentar,
                    'comment_form': CommentForm}
 
-	return redirect(request, '/comment', context)
+	return redirect(request, 'commenthtml', context)
                   
