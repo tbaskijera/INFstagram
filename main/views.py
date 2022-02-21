@@ -98,4 +98,4 @@ def update_profile(request):
 
 def logout_view(request):
 	logout(request)
-	return loginuser(request)
+	return HttpResponseRedirect("/login")
