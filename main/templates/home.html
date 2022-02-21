@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<!--<img src="{% static 'images/index.png'%}" alt="">-->
+        {% if user.is_authenticated %}
+            <p>user je: {{user.get_username}}</p>
+        {% endif %}
+
+        {% for p in lista_objava %}
+                <!--Profil: {#{# p.profil_objava #}#}<br>-->
+                slika: {{ p.slika_objava }}<br>
+                <img src="{{ p.slika_objava.url }}" alt="objava"><br>
+                opis: {{p.opis_objava}}<br>
+                vrijeme: {{o.vrijeme_objava}}<br>
+                lajk: {{p.lajk_objava}}<br><br><br>
+        {% endfor %}
+
+        {% for p in lista_profil %}
+                {% if p.user == user%}
+                    logiran je {{p.user }}<br>
+                    id: {{p.id}}<br>
+                    <img src="{{ p.slika_profil.url }}" alt="">
+                {% endif%}
+            {% endfor %}
+
+{% endblock %}

@@ -11,10 +11,6 @@ from django.contrib.auth import update_session_auth_hash
 from django.db import transaction
 # Create your views here.
 
-from django.contrib.auth import logout
-
-
-
 def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
 
@@ -97,12 +93,11 @@ def update_profile(request):
 	'profile_form': profile_form })
 
 
-
-
-
 def NewPost(request):
 	user = request.user
 	files_objs = []
+	objava = Objava.objects.all()
+	obj = request.POST.get('lajk_objava')
 
 	if request.method == 'POST':
 		form = NewPostForm(request.POST, request.FILES, instance=request.user.profil)
@@ -111,17 +106,23 @@ def NewPost(request):
 			caption = form.cleaned_data.get('opis_objava')
 			
 			time = datetime.now()
-			like = 10
+			#like = 10
+
+			for like in objava:
+				if(like.id == obj):
+					like.lajk_objava += 1
+					like.save()
+
 			profilic = request.user.profil.id
 			print(profilic)
 			
 			for file in files:
-				file_instance = Objava(slika_objava=file,  vrijeme_objava=time, lajk_objava=like, profil_objava_id = profilic )
+				file_instance = Objava(slika_objava=file,  vrijeme_objava=time,  profil_objava_id = profilic )
 				#profil_objava=user,
 				#file_instance.save()
 				files_objs.append(file_instance)
 
-			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, lajk_objava=like, profil_objava_id = profilic)
+			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, profil_objava_id = profilic)
 			#profil_objava=user,
 			#p.content.set(files_objs)
 			print(p)
@@ -133,3 +134,13 @@ def NewPost(request):
 	context = {'form':form}
 
 	return render(request, 'nova_objava.html', context)
+
+
+def home(request):
+	#lista_nova = Objava.objects.all()
+	# - je za postavljanje objava od najnovijih do najstarijih
+	lista_objava = Objava.objects.order_by('-vrijeme_objava')
+	lista_profil = Profil.objects.all()
+	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil}
+	return render(request, 'home.html', context=context)
+
