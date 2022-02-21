@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
 {% load static %}
+{% load crispy_forms_tags %}
 <!--<img src="{% static 'images/index.png'%}" alt="">-->
         {% if user.is_authenticated %}
             <p>user je: {{user.get_username}}</p>
@@ -30,6 +32,33 @@ npr.         12             12       13      12   korisnik100
                                         opis: {{o.opis_objava}}<br>
                                         vrijeme: {{o.vrijeme_objava}}<br>
                                         lajk: {{o.lajk_objava}}<br><br><br>
+
+
+                                        {% for comment in comments %}
+                                                <div class="comment">
+                                                <p class="info">
+                                                Comment {{ forloop.counter }} by {{ comment.name }}
+                                                {{ comment.created }}
+                                                </p>
+                                                {{ comment.body|linebreaks }}
+                                                </div>
+                                                {% empty %}
+                                                <p>There are no comments yet.</p>
+                                        {% endfor %}
+
+                                        {% if new_comment %}
+                                                <h2>Your comment has been added.</h2>
+                                                {% else %}
+                                                <h2>Add a new comment</h2>
+                                                <form method="POST">
+                                                {{ comment_form |crispy }}
+                                                {% csrf_token %}
+                                                <p><input type="submit" value="Add comment"></p>
+                                                </form>
+                                        {% endif %}
+
+
+
                                         <br>
                                 {% endif%}
                         {% endfor %}

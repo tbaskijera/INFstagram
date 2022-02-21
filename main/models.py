@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import django.utils.timezone
 
 # Create your models here.
 
@@ -74,7 +75,8 @@ class Komentar(models.Model):
     opis_komentar = models.CharField(max_length = 500)
     objava_komentar = models.ForeignKey("Objava", on_delete = models.CASCADE)
     vrijeme_komentar = models.DateTimeField()
-    lajk_komentar = models.IntegerField()
+    body = models.TextField(default ="komentar") 
+    #created = models.DateTimeField(auto_now_add=True) #ovo se moze dodat kad bude nova baza
 
     def __str__(self):
         return self.opis_komentar

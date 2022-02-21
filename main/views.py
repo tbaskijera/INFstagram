@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from django.http import HttpResponse
-from django.shortcuts import  render, redirect, HttpResponseRedirect
+from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
 from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -146,3 +146,28 @@ def home(request):
 	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil, 'lista_useri': lista_useri}
 	return render(request, 'home.html', context=context)
 
+
+def novikomentar(request, objava_id):
+
+	post = get_object_or_404(Objava, id=objava_id)
+	user = request.user 
+	komentar = None
+
+	komentari = post.comments
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			komentar = form.save(commit=False)
+			komentar.post = post
+			komentar.user = user
+			komentar.save()
+	else:
+		form = CommentForm()
+	
+	context = {'post': post,
+                   'comments': komentari,
+                   'new_comment': komentar,
+                   'comment_form': CommentForm}
+
+	return redirect(request, '/comment', context)
+                  

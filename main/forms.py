@@ -64,3 +64,11 @@ class NewPostForm(forms.ModelForm):
 	class Meta:
 		model = Objava
 		fields = ('slika_objava', 'opis_objava')
+
+
+class CommentForm(forms.ModelForm):
+	body = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
+	opis_komentar = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
+	class Meta:
+		model = Komentar
+		fields = ('body', 'opis_komentar')
