@@ -1,14 +1,13 @@
-from datetime import date, datetime
-from django.http import HttpResponse
 from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
-from .forms import *
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .models import *
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse
+from django.contrib import messages
 from django.db import transaction
+from datetime import datetime
+from .models import *
+from .forms import *
 # Create your views here.
 
 def homepage(request):
@@ -16,8 +15,10 @@ def homepage(request):
 
 @login_required
 def profil(request):
-	lista_nova = Profil.objects.all()
-	context = {'lista_nova': lista_nova}
+	lista_profil = Profil.objects.all()
+	lista_objava = Objava.objects.order_by('-vrijeme_objava')
+	lista_useri = User.objects.all()
+	context = {'lista_profil': lista_profil, 'lista_objava': lista_objava, 'lista_useri': lista_useri}
 	return render(request, 'profil.html', context=context)
 
 def registration(request):
