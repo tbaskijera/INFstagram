@@ -5,7 +5,8 @@
 <!--<img src="{% static 'images/index.png'%}" alt="">-->
         {% if user.is_authenticated %}
             <p>user je: {{user.get_username}}</p>
-            {% for p in lista_nova %}
+
+            {% for p in lista_profil %}
                 {% if p.user == user%}
                     logiran je {{p.user }}<br>
                     id: {{p.id}}<br>
@@ -13,23 +14,27 @@
                 {% endif%}
             {% endfor %}
             <!-- to je dodano -->
+            <br> 
             <button class="btn btn-light" type="submit"><a href="/novaobjava">Nova objava</a></button>
-        {% endif %}
+            <br>
+            <br>
+            <hr>
+
+            {% for p in lista_profil %}
+                {% if p.user == user%}
+                {% for o in lista_objava %}
+                    {% if p.id == o.profil_objava_id %}
+                    <br>
+                        <img src="{{ o.slika_objava.url }}" alt="">
+                        opis slike: {{o.opis_objava}}
+                    {% endif%}
+                {% endfor %}     
+                {% endif%}
+            {% endfor %}
+
+
+        {% endif%}
 
         
 
-    <p> Početak for petlje </p>
-    <ul>
-        {% for p in lista_nova %}
-            <li>
-                Ime: {{ p.bio }}<br>
-                id: {{ p.id }}<br>
-                user: {{p.user}}<br>
-                slika: {{p.slika_profil}}<br>
-                {% if p.user == ivo45 %}
-                    <p>7 je user id</p>
-                {% endif%}
-            </li>
-        {% endfor %}
-    </ul>
 {% endblock %}
