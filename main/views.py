@@ -229,6 +229,7 @@ def home_view(request, o_id):
 			komentar.post_id = o_id
 			komentar.user = user
 			form.save()
+		return redirect('main:home')
 	else:
 		form = InputForm(request.GET)
 	
