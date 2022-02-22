@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.db import transaction
 from datetime import datetime
 from .models import *
-from .forms import *
 # Create your views here.
 
 def homepage(request):
@@ -153,29 +152,29 @@ def home(request):
 	return render(request, 'home.html', context=context)
 
 
-def novikomentar(request, objava_id):
+# def novikomentar(request, objava_id):
 
-	post = get_object_or_404(Objava, id=objava_id)
-	user = request.user 
-	komentar = None
+# 	post = get_object_or_404(Objava, id=objava_id)
+# 	user = request.user 
+# 	komentar = None
 
-	komentari = post.comments
-	if request.method == 'POST':
-		form = CommentForm(request.POST)
-		if form.is_valid():
-			komentar = form.save(commit=False)
-			komentar.post = post
-			komentar.user = user
-			komentar.save()
-	else:
-		form = CommentForm()
+# 	komentari = post.comments
+# 	if request.method == 'POST':
+# 		form = CommentForm(request.POST)
+# 		if form.is_valid():
+# 			komentar = form.save(commit=False)
+# 			komentar.post = post
+# 			komentar.user = user
+# 			komentar.save()
+# 	else:
+# 		form = CommentForm()
 	
-	context = {'post': post,
-                   'comments': komentari,
-                   'new_comment': komentar,
-                   'comment_form': CommentForm}
+# 	context = {'post': post,
+#                    'comments': komentari,
+#                    'new_comment': komentar,
+#                    'comment_form': CommentForm}
 
-	return render(request, 'comment.html', context)
+# 	return render(request, 'comment.html', context)
 
 
 @login_required
@@ -198,3 +197,34 @@ def like(request, o_id):
 	post.save()
 
 	return HttpResponseRedirect(reverse('main:home'))
+
+# @login_required
+# def commentar(request, o_id):
+# 	user = request.user
+# 	post = Objava.objects.get(id=o_id)
+# 	current_comm = post.comm
+
+# 	if request.method == "POST":
+# 		form = CommentForm(request.POST)
+# 		form.save()
+# 		return redirect("main:home")
+# 	form = NewUserForm()
+
+# Create your views here.
+# def home_view(request):
+# 	form = InputForm()
+# 	#form.save()
+# 	context ={}
+# 	#context['form']= InputForm()
+# 	#context.save()
+# 	return render(request, "comment.html", {'form': form})
+
+def home_view(request):
+	#form = InputForm()
+	user = request.user
+	if request.method == 'POST':
+		form = InputForm(request.POST)
+		if form.is_valid():
+			form.save()
+
+	return render(request, "comment.html", {'form': form})

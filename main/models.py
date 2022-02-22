@@ -69,20 +69,16 @@ class Objava(models.Model):
     def __str__(self):
         return self.opis_objava
 
-
-class Komentar(models.Model):
-    profil_komentar = models.ForeignKey("Profil", on_delete = models.CASCADE)
-    opis_komentar = models.CharField(max_length = 500)
-    objava_komentar = models.ForeignKey("Objava", on_delete = models.CASCADE)
-    vrijeme_komentar = models.DateTimeField()
-    body = models.TextField(default ="komentar") 
-    #created = models.DateTimeField(auto_now_add=True) #ovo se moze dodat kad bude nova baza
-
-    def __str__(self):
-        return self.opis_komentar
-
-
-
 class Likes(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
 	post = models.ForeignKey(Objava, on_delete=models.CASCADE, related_name='post_like')
+
+class Komentar(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comm')
+    #post = models.ForeignKey(Objava, on_delete=models.CASCADE, related_name='post_comm')
+    comment = models.CharField(max_length=400)
+    title = models.CharField(max_length=100, default='a')
+    #created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comment[:60]
