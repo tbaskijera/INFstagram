@@ -55,7 +55,7 @@ class Objava(models.Model):
     slika_objava = models.ImageField(upload_to='static/image')
     opis_objava = models.CharField(max_length = 500)
     vrijeme_objava = models.DateTimeField(null=True)
-    lajk_objava = models.IntegerField(null=True)
+    likes = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -80,3 +80,9 @@ class Komentar(models.Model):
 
     def __str__(self):
         return self.opis_komentar
+
+
+
+class Likes(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
+	post = models.ForeignKey(Objava, on_delete=models.CASCADE, related_name='post_like')

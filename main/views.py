@@ -1,6 +1,7 @@
 from datetime import date, datetime
 from django.http import HttpResponse
 from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
+from django.urls import reverse
 from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -169,5 +170,26 @@ def novikomentar(request, objava_id):
                    'new_comment': komentar,
                    'comment_form': CommentForm}
 
-	return redirect(request, 'comment.html', context)
-                  
+	return render(request, 'comment.html', context)
+
+
+@login_required
+def like(request, o_id):
+	user = request.user
+	post = Objava.objects.get(id=o_id)
+	current_likes = post.likes
+	liked = Likes.objects.filter(user=user, post=post).count()
+
+	if not liked:
+		like = Likes.objects.create(user=user, post=post)
+		#like.save()
+		current_likes = current_likes + 1
+
+	else:
+		Likes.objects.filter(user=user, post=post).delete()
+		current_likes = current_likes - 1
+
+	post.likes = current_likes
+	post.save()
+
+	return HttpResponseRedirect(reverse('main:home'))

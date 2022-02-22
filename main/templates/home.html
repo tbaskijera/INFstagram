@@ -31,32 +31,11 @@ npr.         12             12       13      12   korisnik100
                                         <img src="{{ o.slika_objava.url }}" alt="objava"><br>
                                         opis: {{o.opis_objava}}<br>
                                         vrijeme: {{o.vrijeme_objava}}<br>
-                                        lajk: {{o.lajk_objava}}<br><br><br>
-
-
-                                        {% for comment in comments %}
-                                                <div class="comment">
-                                                <p class="info">
-                                                Comment {{ forloop.counter }} by {{ comment.name }}
-                                                {{ comment.created }}
-                                                </p>
-                                                {{ comment.body|linebreaks }}
-                                                </div>
-                                                {% empty %}
-                                                <p>There are no comments yet.</p>
-                                        {% endfor %}
-
-                                        {% if new_comment %}
-                                                <h2>Your comment has been added.</h2>
-                                                {% else %}
-                                                <h2>Add a new comment</h2>
-                                                <form method="POST">
-                                                {{ comment_form |crispy }}
-                                                {% csrf_token %}
-                                                <p><input type="submit" value="Add comment"></p>
-                                                </form>
-                                        {% endif %}
-
+                                        <div class="media-right">
+                                                <a href="{% url 'main:postlike' o.id%}"><i class="material-icons has-text-danger">favorite</i></a>
+                                                <p>{{ o.likes }} Likes</p>  
+                                         </div>
+                                        lajk: {{o.likes}}<br><br><br>
 
 
                                         <br>

@@ -18,4 +18,5 @@ urlpatterns = [
     path('newpost/', views.NewPost, name='newpost'),
     path('home', views.home, name='home'),
     path('', views.home, name='home'),
+    path('<int:o_id>/like', views.like, name='postlike')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
