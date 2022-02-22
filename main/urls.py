@@ -19,10 +19,6 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('', views.home, name='home'),
     path('<int:o_id>/like', views.like, name='postlike'),
-    path('<int:o_id>/comm', views.home_view, name='postcomm'),
-
-
-    #path('a', PostListView.as_view(), name='homes'),
-    #path('blog/<int:pk>', PostDetailView.as_view(), name='post_detail')
+    path('<int:o_id>/comm', views.komentari, name='postcomm'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

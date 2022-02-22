@@ -113,10 +113,10 @@ def NewPost(request):
 			time = datetime.now()
 			#like = 10
 
-			for like in objava:
-				if(like.id == obj):
-					like.lajk_objava += 1
-					like.save()
+			# for like in objava:
+			# 	if(like.id == obj):
+			# 		like.lajk_objava += 1
+			# 		like.save()
 
 			profilic = request.user.profil.id
 			print(profilic)
@@ -148,33 +148,10 @@ def home(request):
 	#lista_objava = Objava.objects.all()
 	lista_profil = Profil.objects.all()
 	lista_useri = User.objects.all()
-	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil, 'lista_useri': lista_useri}
+	lista_komentar = Komentar.objects.all()
+	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil, 'lista_useri': lista_useri, 'lista_komentar': lista_komentar}
 	return render(request, 'home.html', context=context)
 
-
-# def novikomentar(request, objava_id):
-
-# 	post = get_object_or_404(Objava, id=objava_id)
-# 	user = request.user 
-# 	komentar = None
-
-# 	komentari = post.comments
-# 	if request.method == 'POST':
-# 		form = CommentForm(request.POST)
-# 		if form.is_valid():
-# 			komentar = form.save(commit=False)
-# 			komentar.post = post
-# 			komentar.user = user
-# 			komentar.save()
-# 	else:
-# 		form = CommentForm()
-	
-# 	context = {'post': post,
-#                    'comments': komentari,
-#                    'new_comment': komentar,
-#                    'comment_form': CommentForm}
-
-# 	return render(request, 'comment.html', context)
 
 
 @login_required
@@ -198,28 +175,9 @@ def like(request, o_id):
 
 	return HttpResponseRedirect(reverse('main:home'))
 
-# @login_required
-# def commentar(request, o_id):
-# 	user = request.user
-# 	post = Objava.objects.get(id=o_id)
-# 	current_comm = post.comm
 
-# 	if request.method == "POST":
-# 		form = CommentForm(request.POST)
-# 		form.save()
-# 		return redirect("main:home")
-# 	form = NewUserForm()
-
-# Create your views here.
-# def home_view(request):
-# 	form = InputForm()
-# 	#form.save()
-# 	context ={}
-# 	#context['form']= InputForm()
-# 	#context.save()
-# 	return render(request, "comment.html", {'form': form})
-
-def home_view(request, o_id):
+@login_required
+def komentari(request, o_id):
 	#form = InputForm()
 	user = request.user
 	if request.method == 'POST':

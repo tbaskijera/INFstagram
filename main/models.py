@@ -10,16 +10,6 @@ from django.dispatch import receiver
 import django.utils.timezone
 
 # Create your models here.
-
-#ovo se ne koristi i dalje msm ovaj model
-class Korisnik(models.Model):
-    
-    ime = models.CharField(max_length = 30)
-    prezime = models.CharField(max_length = 70)
-    datum_rodenja = models.DateField()
-
-    def __str__(self):
-        return self.prezime
     
 
 class Profil(models.Model):
@@ -77,7 +67,6 @@ class Komentar(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comm')
     post = models.ForeignKey(Objava, on_delete=models.CASCADE, related_name='post_comm')
     comment = models.CharField(max_length=400)
-    title = models.CharField(max_length=100, default='a')
     #created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -8,15 +8,15 @@ from .models import *
 
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
-	name = forms.CharField()
-	surname = forms.CharField()
+	first_name = forms.CharField()
+	last_name = forms.CharField()
 	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))
 	#profile_picture = forms.ImageField(upload_to = "images/")      
 	#bio = forms.CharField( max_length = "260", widget=forms.Textarea(attrs={'cols': 40, 'rows': 6}))                                     
 
 	class Meta:
 		model = User
-		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
+		fields = ("username", "first_name", "last_name", "date_field", "email", "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
@@ -74,11 +74,10 @@ class NewPostForm(forms.ModelForm):
 
 class InputForm(forms.ModelForm):
 	comment = forms.CharField(max_length=500)
-	title = forms.CharField(max_length=100)
 
 	class Meta:
 		model = Komentar
-		fields = ('comment', 'title')
+		fields = ('comment',)
 
 	# def save(self, commit=True):
 	# 	comm = super(InputForm, self).save(commit=False)

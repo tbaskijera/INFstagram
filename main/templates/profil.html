@@ -2,23 +2,26 @@
 {% block content %}
 
 {% load static %}
+<hr>
 <!--<img src="{% static 'images/index.png'%}" alt="">-->
         {% if user.is_authenticated %}
-            <p>user je: {{user.get_username}}</p>
+            <!--<p>user je: {#{#user.get_username#}#}</p>-->
 
             {% for p in lista_profil %}
                 {% if p.user == user%}
-                    logiran je {{p.user }}<br>
-                    id: {{p.id}}<br>
-                    <img src="{{ p.slika_profil.url }}" alt="">
+                    <!--logiran je {#{#p.user #}#}<br>
+                    id: {#{#p.id#}#}<br>-->
+                    <img src="{{ p.slika_profil.url }}" alt="slika profila" style='border-radius: 50%; width:150px; height:150px '><br><br>
+                    <strong>{{user.first_name}} {{user.last_name}}</strong><br>
+                    {{p.bio}}<br>
                 {% endif%}
             {% endfor %}
             <!-- to je dodano -->
             <br> 
-            <button class="btn btn-light" type="submit"><a href="/novaobjava">Nova objava</a></button>
+            <button class="btn btn-light" type="submit"><a href="/newpost/">Nova objava</a></button>
             <br>
             <br>
-            <hr>
+            <hr style="width:30%;text-align:left;margin-left:0">
 
             {% for p in lista_profil %}
                 {% if p.user == user%}
