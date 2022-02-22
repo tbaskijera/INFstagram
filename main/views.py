@@ -219,12 +219,20 @@ def like(request, o_id):
 # 	#context.save()
 # 	return render(request, "comment.html", {'form': form})
 
-def home_view(request):
+def home_view(request, o_id):
 	#form = InputForm()
 	user = request.user
 	if request.method == 'POST':
 		form = InputForm(request.POST)
 		if form.is_valid():
+			komentar = form.save(commit=False)
+			komentar.post_id = o_id
+			komentar.user = user
 			form.save()
-
-	return render(request, "comment.html", {'form': form})
+	else:
+		form = InputForm(request.GET)
+		context = {'user':user, 'form':form, 'post_id': o_id}
+		return render(request, 'comment.html', context)
+	
+	context = {'user':user, 'form':form, 'post_id': o_id}
+	return render(request, 'comment.html', context)

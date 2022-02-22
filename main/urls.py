@@ -19,7 +19,7 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('', views.home, name='home'),
     path('<int:o_id>/like', views.like, name='postlike'),
-    path('comm', views.home_view, name='postcomm'),
+    path('<int:o_id>/comm', views.home_view, name='postcomm'),
 
 
     #path('a', PostListView.as_view(), name='homes'),
