@@ -37,6 +37,13 @@ npr.         12             12       13      12   korisnik100
                                          </div>
                                         lajk: {{o.likes}}<br><br><br>
 
+                                        <form action="{% url 'main:postcomm' o.id%}">
+                                                <input type="submit" value="komentiraj" />
+                                        </form>
+
+                                        
+                                            
+
 
                                         <br>
                                 {% endif%}

@@ -66,9 +66,23 @@ class NewPostForm(forms.ModelForm):
 		fields = ('slika_objava', 'opis_objava')
 
 
-class CommentForm(forms.ModelForm):
-	body = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
-	opis_komentar = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
+# class CommentForm(forms.ModelForm):
+# 	comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
+# 	class Meta:
+# 		model = Comment
+# 		fields = ('comment')
+
+class InputForm(forms.ModelForm):
+	comment = forms.CharField(max_length=500)
+	title = forms.CharField(max_length=100)
+
 	class Meta:
 		model = Komentar
-		fields = ('body', 'opis_komentar')
+		fields = ('comment', 'title')
+
+	# def save(self, commit=True):
+	# 	comm = super(InputForm, self).save(commit=False)
+	# 	comm.title = self.cleaned_data['comment']
+	# 	if commit:
+	# 		comm.save()
+	# 	return comm
