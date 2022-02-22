@@ -231,8 +231,6 @@ def home_view(request, o_id):
 			form.save()
 	else:
 		form = InputForm(request.GET)
-		context = {'user':user, 'form':form, 'post_id': o_id}
-		return render(request, 'comment.html', context)
 	
 	context = {'user':user, 'form':form, 'post_id': o_id}
 	return render(request, 'comment.html', context)
