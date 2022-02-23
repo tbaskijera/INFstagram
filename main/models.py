@@ -4,8 +4,6 @@ from django.dispatch import receiver
 from django.db import models
 from PIL import Image
 from email.policy import default
-
-
 # Create your models here.
 
 class Profile(models.Model):
@@ -16,7 +14,8 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         img = Image.open(self.profile_image.path)
-        if img.mode in ("RGBA", "P"): img = img.convert("RGB")
+        if img.mode in ("RGBA", "P"): 
+            img = img.convert("RGB")
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)

@@ -111,7 +111,7 @@ def NewPost(request):
 
 			p = Post.objects.get_or_create(post_image=file, post_description=caption,  post_time=time, profile_post_id = profile_id)
 			p[0].save()
-			return redirect('main:homepage')
+			return redirect('main:profile')
 	else:
 		form = NewPostForm(instance=request.user.profile)
 
@@ -139,7 +139,6 @@ def like(request, post_id):
 	if not liked:
 		like = Likes.objects.create(user=user, post=post)
 		current_likes = current_likes + 1
-
 	else:
 		Likes.objects.filter(user=user, post=post).delete()
 		current_likes = current_likes - 1

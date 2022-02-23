@@ -17,8 +17,9 @@
             {% endfor %}
             <!-- to je dodano -->
             <br> <br>
-            <button class="btn btn-light" type="submit"><a href="profile/newpost/">Nova objava</a></button>
-            <button class="btn btn-light" type="submit"><a href="updateprofile">Uredi profil</a></button>
+            <button type="submit" style="background: linear-gradient(#e66465, #9198e5); height:35px; border-radius: 16px; border: none;"><a href="profile/newpost/" style="color:black;">Nova objava</a></button>
+            <button type="submit" style="background: linear-gradient(#e66465, #9198e5); height:35px; border-radius: 16px; border: none;"><a href="updateprofile" style="color:black;">Uredi profil</a></button>
+            <button type="submit" style="background: linear-gradient(#e66465, #9198e5); height:35px; border-radius: 16px; border: none;"><a href="changepassword/" style="color:black;">Promijeni lozinku</a></button>
             <br>
             <br>
             <hr style="width:30%;text-align:left;margin-left:0">
@@ -29,15 +30,12 @@
                     {% if p.id == o.profile_post_id %}
                     <br>
                         <img src="{{ o.post_image.url }}" alt=""> <br>
-                        {{o.post_description}}
+                        {{o.post_description}}<br>
                     {% endif%}
                 {% endfor %}     
                 {% endif%}
             {% endfor %}
-
-
         {% endif%}
 
-        
 
 {% endblock %}

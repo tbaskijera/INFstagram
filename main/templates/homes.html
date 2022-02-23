@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-    {% for post in posts %}
-        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.post_description }}</a> </h2>
-        <p>{{ post.post_description|truncatewords:10 }}</p>
-    {% endfor %}
-{% endblock %}

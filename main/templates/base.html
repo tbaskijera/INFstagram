@@ -11,7 +11,7 @@
     <h1> <a href = 'home'> INFstagram</a></h1>
     {% if user.is_authenticated %}
         <p>Prijavljeni ste kao <strong><a href = '/profile'>@{{ user.get_username }}</a></strong></p> 
-        <button class="btn btn-light" type="submit"><a href="/logout">Odjava</a></button>
+        <button type="submit" style="background: linear-gradient(#e66465, #9198e5); height:35px; border-radius: 16px; border: none;"><a href="/logout" style="color:black;">Odjava</a></button>
     {% endif %}
         <div class="title">
             {% block title %}
