@@ -9,13 +9,13 @@ from .models import *
 
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
-	name = forms.CharField()
-	surname = forms.CharField()
+	first_name = forms.CharField()
+	last_name = forms.CharField()
 	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))                                   
 
 	class Meta:
 		model = User
-		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
+		fields = ("username", "first_name", "last_name", "date_field", "email", "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)

@@ -9,14 +9,16 @@
 
             {% for p in profile_list %}
                 {% if p.user == user%}
-                    logiran je {{p.user }}<br>
-                    id: {{p.id}}<br>
-                    <img src="{{ p.profile_image.url }}" alt="">
-                {% endif%}
+                    <strong>{{p.user }}</strong><br><br>
+                    <img src="{{ p.profile_image.url }}" alt="profilna slika" style='border-radius: 50%; width: 150px; height: 150px'>
+                    <br><br><strong>{{user.first_name}} {{user.last_name}}</strong>
+                    <br>{{p.bio}}
+                    {% endif%}
             {% endfor %}
             <!-- to je dodano -->
-            <br> 
-            <button class="btn btn-light" type="submit"><a href="newpost/">Nova objava</a></button>
+            <br> <br>
+            <button class="btn btn-light" type="submit"><a href="profile/newpost/">Nova objava</a></button>
+            <button class="btn btn-light" type="submit"><a href="updateprofile">Uredi profil</a></button>
             <br>
             <br>
             <hr style="width:30%;text-align:left;margin-left:0">
