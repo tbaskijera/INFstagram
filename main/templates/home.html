@@ -26,11 +26,11 @@
 
                                         
                                         {% for k in comment_list %}
-                                                {% if k.post_id == o.id%}
+                                                {% if k.post_id == o.id and k.user_id == user.id %}
                                                         <text><strong>{{k.user}}: </strong>{{k.comment}}</text>
-                                                        {% if k.user_id == u.id %}
-                                                                <a href="{% url 'main:deletecomm' k.id%}"><i class="material-icons" style="border-top: 20px;">cancel</i></a> <br>
-                                                        {% endif %}
+                                                        <a href="{% url 'main:deletecomm' k.id%}"><i class="material-icons">cancel</i></a> <br>
+                                                {% else %}
+                                                        <text><strong>{{k.user}}: </strong>{{k.comment}}</text> <br>
                                                 {% endif %}
                                                 
                                         {% endfor %}

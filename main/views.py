@@ -125,11 +125,12 @@ def NewPost(request):
 
 
 def home(request):
+	user = request.user
 	post_list = Post.objects.order_by('-post_time')
 	profile_list = Profile.objects.all()
 	user_list = User.objects.all()
 	comment_list = Comment.objects.all()
-	context = {'post_list': post_list, 'profile_list': profile_list, 'user_list': user_list, 'comment_list': comment_list}
+	context = {'post_list': post_list, 'profile_list': profile_list, 'user_list': user_list, 'comment_list': comment_list, 'user':user}
 	return render(request, 'home.html', context=context)
 
 
