@@ -70,7 +70,7 @@ def password_change(request):
 			return redirect('change_password_done')
 	else:
 		form = ChangePasswordForm(instance=user)
-	return render(request, 'change_password.html', context = {'change_form':form})
+	return render(request, 'change_password.html', context = {'form':form})
 
 def password_change_done(request):
 	return render(request, 'change_password_successful.html')
