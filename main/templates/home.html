@@ -29,7 +29,7 @@
                                                 {% if k.post_id == o.id and k.user_id == user.id %}
                                                         <text><strong>{{k.user}}: </strong>{{k.comment}}</text>
                                                         <a href="{% url 'main:deletecomm' k.id%}"><i class="material-icons">cancel</i></a> <br>
-                                                {% else %}
+                                                {% elif k.post_id == o.id%}
                                                         <text><strong>{{k.user}}: </strong>{{k.comment}}</text> <br>
                                                 {% endif %}
                                                 
