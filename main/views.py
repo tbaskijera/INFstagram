@@ -1,18 +1,14 @@
-from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.shortcuts import  render, redirect, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.db import transaction
 from django.http import HttpResponse
-from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
+from django.contrib import messages
+from django.db import transaction
 from django.urls import reverse
 from datetime import datetime
-
 from .forms import *
 from .models import *
-
 
 # Create your views here.
 
@@ -120,7 +116,6 @@ def NewPost(request):
 		form = NewPostForm(instance=request.user.profile)
 
 	context = {'form':form}
-
 	return render(request, 'nova_objava.html', context)
 
 
@@ -181,5 +176,4 @@ def delete_comment(request, k_id):
 
 
 def redirect_view(request):
-    response = redirect('/home')
-    return response
+    return redirect('/home')

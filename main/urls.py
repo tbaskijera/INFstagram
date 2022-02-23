@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 app_name = 'main'
-#from .views import PostListView, PostDetailView
+
 urlpatterns = [
     path('homepage', views.homepage, name='homepage'),
     path('registration', views.register_user, name='register'),
