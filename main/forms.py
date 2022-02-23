@@ -11,11 +11,11 @@ class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
 	name = forms.CharField()
 	surname = forms.CharField()
-	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))                                     
+	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))                                   
 
 	class Meta:
 		model = User
-		fields = ("username", "first_name", "last_name", "date_field", "email", "password1", "password2")
+		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
@@ -68,4 +68,4 @@ class NewCommentForm(forms.ModelForm):
 
 	class Meta:
 		model = Comment
-		fields = ('comment', 'title')
+		fields = ('comment',)

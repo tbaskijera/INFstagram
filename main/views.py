@@ -84,15 +84,15 @@ def password_change_done(request):
 @transaction.atomic
 def edit_profile(request):
     if request.method == 'POST':
-        profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profil)
+        profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, ('Your profile was successfully updated!'))
-            return redirect('/homepage')
+            return redirect('/profile/')
         else:
             messages.error(request, ('Please correct the error below.'))
     else:
-        profile_form = EditProfileForm(instance=request.user.profil)
+        profile_form = EditProfileForm(instance=request.user.profile)
     return render(request, 'edit_profile.html', { 'profile_form': profile_form })
 
 
@@ -106,25 +106,18 @@ def NewPost(request):
 		if form.is_valid():
 			files = request.FILES.getlist('post_image')
 			caption = form.cleaned_data.get('post_description')
-			
 			time = datetime.now()
-
-			# for like in objava:
-			# 	if(like.id == obj):
-			# 		like.lajk_objava += 1
-			# 		like.save()
-
-			profile_id = request.user.profil.id
+			profile_id = request.user.profile.id
 			
 			for file in files:
-				file_instance = Post(post_image=file,  post_time=time,  profil_post_id = profile_id )
+				file_instance = Post(post_image=file,  post_time=time,  profile_post_id = profile_id )
 				files_objs.append(file_instance)
 
-			p = Post.objects.get_or_create(post_image=file, post_description=caption,  post_time=time, profil_post_id = profile_id)
+			p = Post.objects.get_or_create(post_image=file, post_description=caption,  post_time=time, profile_post_id = profile_id)
 			p[0].save()
 			return redirect('main:homepage')
 	else:
-		form = NewPostForm(instance=request.user.profil)
+		form = NewPostForm(instance=request.user.profile)
 
 	context = {'form':form}
 
@@ -135,7 +128,8 @@ def home(request):
 	post_list = Post.objects.order_by('-post_time')
 	profile_list = Profile.objects.all()
 	user_list = User.objects.all()
-	context = {'lista_objava': post_list, 'lista_profil': profile_list, 'lista_useri': user_list}
+	comment_list = Comment.objects.all()
+	context = {'post_list': post_list, 'profile_list': profile_list, 'user_list': user_list, 'comment_list': comment_list}
 	return render(request, 'home.html', context=context)
 
 
@@ -161,8 +155,7 @@ def like(request, post_id):
 
 
 @login_required
-def komentari(request, post_id):
-	#form = InputForm()
+def comment(request, post_id):
 	user = request.user
 
 	if request.method == 'POST':
@@ -178,3 +171,14 @@ def komentari(request, post_id):
 	
 	context = {'user':user, 'form':form, 'post_id': post_id}
 	return render(request, 'comment.html', context)
+
+def delete_comment(request, k_id):
+	user = request.user
+	comment = Comment.objects.get(id=k_id)
+	Comment.objects.filter(user=user, comment=comment).delete()
+	return HttpResponseRedirect(reverse('main:home'))
+
+
+def redirect_view(request):
+    response = redirect('/home')
+    return response

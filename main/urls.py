@@ -14,11 +14,12 @@ urlpatterns = [
    	path('changepassword/done', views.password_change_done, name='change_password_done'),
     path('updateprofile', views.edit_profile, name='updateprofile'),
     path('logout', views.logout_view,name='logout'),
-    path('profile/', views.profile, name='profile'),
-    path('newpost/', views.NewPost, name='newpost'),
+    path('profile', views.profil, name='profile'),
+    path('profile/newpost/', views.NewPost, name='newpost'),
     path('home', views.home, name='home'),
-    path('', views.home, name='home'),
-    path('<int:o_id>/like', views.like, name='postlike'),
-    path('<int:o_id>/comm', views.komentari, name='postcomm'),
+    path('', views.redirect_view, name='home'),
+    path('<int:post_id>/like', views.like, name='postlike'),
+    path('<int:post_id>/comm', views.comment, name='postcomm'),
+    path('<int:k_id>/deletecomm', views.delete_comment, name='deletecomm')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
