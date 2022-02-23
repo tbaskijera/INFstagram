@@ -109,10 +109,10 @@ def NewPost(request):
 			
 			time = datetime.now()
 
-			for like in posts:
-				if(like.id == obj):
-					like.lajk_objava += 1
-					like.save()
+			# for like in objava:
+			# 	if(like.id == obj):
+			# 		like.lajk_objava += 1
+			# 		like.save()
 
 			profile_id = request.user.profil.id
 			
@@ -160,7 +160,9 @@ def like(request, post_id):
 	return HttpResponseRedirect(reverse('main:home'))
 
 
-def home_view(request, post_id):
+@login_required
+def komentari(request, post_id):
+	#form = InputForm()
 	user = request.user
 
 	if request.method == 'POST':

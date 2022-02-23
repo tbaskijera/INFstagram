@@ -15,7 +15,7 @@ class NewUserForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
+		fields = ("username", "first_name", "last_name", "date_field", "email", "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
@@ -65,7 +65,6 @@ class NewPostForm(forms.ModelForm):
 
 class NewCommentForm(forms.ModelForm):
 	comment = forms.CharField(max_length=500)
-	title = forms.CharField(max_length=100)
 
 	class Meta:
 		model = Comment

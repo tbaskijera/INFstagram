@@ -64,7 +64,6 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comm')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_comm')
     comment = models.CharField(max_length=400)
-    title = models.CharField(max_length=100, default='a')
     #created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

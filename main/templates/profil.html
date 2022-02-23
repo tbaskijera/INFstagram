@@ -2,9 +2,10 @@
 {% block content %}
 
 {% load static %}
+<hr>
 <!--<img src="{% static 'images/index.png'%}" alt="">-->
         {% if user.is_authenticated %}
-            <p>user je: {{user.get_username}}</p>
+            <!--<p>user je: {#{#user.get_username#}#}</p>-->
 
             {% for p in profile_list %}
                 {% if p.user == user%}
@@ -18,7 +19,7 @@
             <button class="btn btn-light" type="submit"><a href="/newpost">Nova objava</a></button>
             <br>
             <br>
-            <hr>
+            <hr style="width:30%;text-align:left;margin-left:0">
 
             {% for p in profile_list %}
                 {% if p.user == user%}
