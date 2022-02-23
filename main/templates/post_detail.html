@@ -3,8 +3,8 @@
 {% block content %}
 
 
-    <h1>{{ post.opis_objava }}</h1>
-    <p>{{ post.opis_objava}}</p>
+    <h1>{{ post.post_description }}</h1>
+    <p>{{ post.post_description}}</p>
     <hr>
     <h2>Comments</h2>
         {% for comment in post.comment_set.all %}

@@ -1,17 +1,19 @@
-from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
-from django.urls import reverse
-from .forms import *
-from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
-from django.contrib import messages
 from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import  render, redirect, HttpResponseRedirect, get_object_or_404
+from django.urls import reverse
 from datetime import datetime
+
+from .forms import *
 from .models import *
+
+
 # Create your views here.
 
 def homepage(request):
@@ -19,25 +21,25 @@ def homepage(request):
 
 @login_required
 def profil(request):
-	lista_profil = Profil.objects.all()
-	lista_objava = Objava.objects.order_by('-vrijeme_objava')
-	lista_useri = User.objects.all()
-	context = {'lista_profil': lista_profil, 'lista_objava': lista_objava, 'lista_useri': lista_useri}
+	profile_list = Profile.objects.all()
+	post_list = Post.objects.order_by('-post_time')
+	user_list = User.objects.all()
+	context = {'profile_list': profile_list, 'post_list': post_list, 'user_list': user_list}
 	return render(request, 'profil.html', context=context)
 
-def registration(request):
+def register_user(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
 			user = form.save()
 			login(request, user)
 			messages.success(request, "Registration successful." )
-			return redirect("main:homepage")
+			return redirect("main:profile")
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request, 'register.html', context={"register_form":form})
 
-def loginuser(request):
+def login_user(request):
 	if request.method == "POST":
 		form = AuthenticationForm(request, data=request.POST)
 		if form.is_valid():
@@ -47,8 +49,7 @@ def loginuser(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, "You are now logged in as {username}.")
-				#return redirect("main:homepage")
-				return redirect("main:profil")
+				return redirect("main:profile")
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
@@ -61,7 +62,7 @@ def logout_view(request):
 	return HttpResponseRedirect('/login')
 
 @login_required
-def PasswordChange(request):
+def password_change(request):
 	user = request.user
 	if request.method == 'POST':
 		form = ChangePasswordForm(request.POST)
@@ -75,62 +76,51 @@ def PasswordChange(request):
 		form = ChangePasswordForm(instance=user)
 	return render(request, 'change_password.html', context = {'change_form':form})
 
-def PasswordChangeDone(request):
+def password_change_done(request):
 	return render(request, 'change_password_successful.html')
 
 
 @login_required
 @transaction.atomic
-def update_profile(request):
+def edit_profile(request):
     if request.method == 'POST':
-        #user_form = NewUserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profil)
-        if profile_form.is_valid(): # && user_form.is_valid()
+        profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profil)
+        if profile_form.is_valid():
             profile_form.save()
             messages.success(request, ('Your profile was successfully updated!'))
             return redirect('/homepage')
         else:
             messages.error(request, ('Please correct the error below.'))
     else:
-        #user_form = NewUserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profil)
-    return render(request, 'edit_profile.html', {#'user_form': user_form, 
-	'profile_form': profile_form })
+        profile_form = EditProfileForm(instance=request.user.profil)
+    return render(request, 'edit_profile.html', { 'profile_form': profile_form })
 
 
 def NewPost(request):
-	user = request.user
 	files_objs = []
-	objava = Objava.objects.all()
-	obj = request.POST.get('lajk_objava')
+	posts = Post.objects.all()
+	obj = request.POST.get('likes')
 
 	if request.method == 'POST':
-		form = NewPostForm(request.POST, request.FILES, instance=request.user.profil)
+		form = NewPostForm(request.POST, request.FILES, instance=request.user.profile)
 		if form.is_valid():
-			files = request.FILES.getlist('slika_objava')
-			caption = form.cleaned_data.get('opis_objava')
+			files = request.FILES.getlist('post_image')
+			caption = form.cleaned_data.get('post_description')
 			
 			time = datetime.now()
-			#like = 10
 
-			for like in objava:
+			for like in posts:
 				if(like.id == obj):
 					like.lajk_objava += 1
 					like.save()
 
-			profilic = request.user.profil.id
-			print(profilic)
+			profile_id = request.user.profil.id
 			
 			for file in files:
-				file_instance = Objava(slika_objava=file,  vrijeme_objava=time,  profil_objava_id = profilic )
-				#profil_objava=user,
-				#file_instance.save()
+				file_instance = Post(post_image=file,  post_time=time,  profil_post_id = profile_id )
 				files_objs.append(file_instance)
 
-			p = Objava.objects.get_or_create(slika_objava=file, opis_objava=caption,  vrijeme_objava=time, profil_objava_id = profilic)
-			#profil_objava=user,
-			#p.content.set(files_objs)
-			print(p)
+			p = Post.objects.get_or_create(post_image=file, post_description=caption,  post_time=time, profil_post_id = profile_id)
 			p[0].save()
 			return redirect('main:homepage')
 	else:
@@ -142,51 +132,22 @@ def NewPost(request):
 
 
 def home(request):
-	#lista_nova = Objava.objects.all()
-	# - je za postavljanje objava od najnovijih do najstarijih
-	lista_objava = Objava.objects.order_by('-vrijeme_objava')
-	#lista_objava = Objava.objects.all()
-	lista_profil = Profil.objects.all()
-	lista_useri = User.objects.all()
-	context = {'lista_objava': lista_objava, 'lista_profil': lista_profil, 'lista_useri': lista_useri}
+	post_list = Post.objects.order_by('-post_time')
+	profile_list = Profile.objects.all()
+	user_list = User.objects.all()
+	context = {'lista_objava': post_list, 'lista_profil': profile_list, 'lista_useri': user_list}
 	return render(request, 'home.html', context=context)
 
 
-# def novikomentar(request, objava_id):
-
-# 	post = get_object_or_404(Objava, id=objava_id)
-# 	user = request.user 
-# 	komentar = None
-
-# 	komentari = post.comments
-# 	if request.method == 'POST':
-# 		form = CommentForm(request.POST)
-# 		if form.is_valid():
-# 			komentar = form.save(commit=False)
-# 			komentar.post = post
-# 			komentar.user = user
-# 			komentar.save()
-# 	else:
-# 		form = CommentForm()
-	
-# 	context = {'post': post,
-#                    'comments': komentari,
-#                    'new_comment': komentar,
-#                    'comment_form': CommentForm}
-
-# 	return render(request, 'comment.html', context)
-
-
 @login_required
-def like(request, o_id):
+def like(request, post_id):
 	user = request.user
-	post = Objava.objects.get(id=o_id)
+	post = Post.objects.get(id=post_id)
 	current_likes = post.likes
 	liked = Likes.objects.filter(user=user, post=post).count()
 
 	if not liked:
 		like = Likes.objects.create(user=user, post=post)
-		#like.save()
 		current_likes = current_likes + 1
 
 	else:
@@ -198,40 +159,20 @@ def like(request, o_id):
 
 	return HttpResponseRedirect(reverse('main:home'))
 
-# @login_required
-# def commentar(request, o_id):
-# 	user = request.user
-# 	post = Objava.objects.get(id=o_id)
-# 	current_comm = post.comm
 
-# 	if request.method == "POST":
-# 		form = CommentForm(request.POST)
-# 		form.save()
-# 		return redirect("main:home")
-# 	form = NewUserForm()
-
-# Create your views here.
-# def home_view(request):
-# 	form = InputForm()
-# 	#form.save()
-# 	context ={}
-# 	#context['form']= InputForm()
-# 	#context.save()
-# 	return render(request, "comment.html", {'form': form})
-
-def home_view(request, o_id):
-	#form = InputForm()
+def home_view(request, post_id):
 	user = request.user
+
 	if request.method == 'POST':
-		form = InputForm(request.POST)
+		form = NewCommentForm(request.POST)
 		if form.is_valid():
-			komentar = form.save(commit=False)
-			komentar.post_id = o_id
-			komentar.user = user
+			comment = form.save(commit=False)
+			comment.post_id = post_id
+			comment.user = user
 			form.save()
 		return redirect('main:home')
 	else:
-		form = InputForm(request.GET)
+		form = NewCommentForm(request.GET)
 	
-	context = {'user':user, 'form':form, 'post_id': o_id}
+	context = {'user':user, 'form':form, 'post_id': post_id}
 	return render(request, 'comment.html', context)

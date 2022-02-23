@@ -14,10 +14,10 @@
         profil_objava_id -> id -> user_id -> id -> username
 npr.         12             12       13      12   korisnik100
 -->
-        {% for o in lista_objava %}
-                {% for p in lista_profil %}
-                        {% if o.profil_objava_id == p.id%}
-                        {% for u in lista_useri %}
+        {% for o in post_list%}
+                {% for p in profile_list %}
+                        {% if o.profile_post_id == p.id%}
+                        {% for u in user_list %}
                                 {% if p.user_id == u.id%}
                                         id_profila je: {{p.id }} <br>
                                         id usera je: {{u.id}}<br>
@@ -26,11 +26,11 @@ npr.         12             12       13      12   korisnik100
 
 
 
-                                        Profil: {{ o.profil_objava_id }}<br>
-                                        slika: {{ o.slika_objava }}<br>
-                                        <img src="{{ o.slika_objava.url }}" alt="objava"><br>
-                                        opis: {{o.opis_objava}}<br>
-                                        vrijeme: {{o.vrijeme_objava}}<br>
+                                        Profil: {{ o.profile_post_id }}<br>
+                                        slika: {{ o.post_image }}<br>
+                                        <img src="{{ o.post_image.url }}" alt="post"><br>
+                                        opis: {{o.post_description}}<br>
+                                        vrijeme: {{o.post_time}}<br>
                                         <div class="media-right">
                                                 <a href="{% url 'main:postlike' o.id%}"><i class="material-icons has-text-danger">favorite</i></a>
                                                 <p>{{ o.likes }} Likes</p>  

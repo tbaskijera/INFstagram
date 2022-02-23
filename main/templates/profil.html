@@ -6,27 +6,27 @@
         {% if user.is_authenticated %}
             <p>user je: {{user.get_username}}</p>
 
-            {% for p in lista_profil %}
+            {% for p in profile_list %}
                 {% if p.user == user%}
                     logiran je {{p.user }}<br>
                     id: {{p.id}}<br>
-                    <img src="{{ p.slika_profil.url }}" alt="">
+                    <img src="{{ p.profile_image.url }}" alt="">
                 {% endif%}
             {% endfor %}
             <!-- to je dodano -->
             <br> 
-            <button class="btn btn-light" type="submit"><a href="/novaobjava">Nova objava</a></button>
+            <button class="btn btn-light" type="submit"><a href="/newpost">Nova objava</a></button>
             <br>
             <br>
             <hr>
 
-            {% for p in lista_profil %}
+            {% for p in profile_list %}
                 {% if p.user == user%}
-                {% for o in lista_objava %}
-                    {% if p.id == o.profil_objava_id %}
+                {% for o in post_list %}
+                    {% if p.id == o.profile_post_id %}
                     <br>
-                        <img src="{{ o.slika_objava.url }}" alt="">
-                        opis slike: {{o.opis_objava}}
+                        <img src="{{ o.post_image.url }}" alt=""> <br>
+                        {{o.post_description}}
                     {% endif%}
                 {% endfor %}     
                 {% endif%}

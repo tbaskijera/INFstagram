@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for post in posts %}
-        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.opis_objava }}</a> </h2>
-        <p>{{ post.opis_objava|truncatewords:10 }}</p>
+        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.post_description }}</a> </h2>
+        <p>{{ post.post_description|truncatewords:10 }}</p>
     {% endfor %}
 {% endblock %}
