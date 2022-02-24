@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<hr>
+<hr style='border-top: 2px solid black;'>
 {% load static %}
 {% load crispy_forms_tags %}
-
+<div style='text-align: center;'>
         {% for o in post_list%}
                 {% for p in profile_list %}
                         {% if o.profile_post_id == p.id%}
@@ -21,7 +21,7 @@
                                         <strong> {{u.username}}</strong> {{o.post_description}}<br>
                                         {{o.post_time}}<br>
 
-                                        <hr style="width:15%;text-align:left;margin-left:0">
+                                        <hr style="width:20%; margin-left:40% !important; margin-right:40%">
 
                                         
                                         {% for k in comment_list %}
@@ -40,5 +40,5 @@
                         {% endif%}        
                 {% endfor %}
         {% endfor %}
-
+                                </div>
 {% endblock %}

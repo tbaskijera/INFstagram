@@ -121,6 +121,8 @@ def NewPost(request):
 
 def home(request):
 	user = request.user
+	if not user.is_authenticated:
+		return redirect('login')
 	post_list = Post.objects.order_by('-post_time')
 	profile_list = Profile.objects.all()
 	user_list = User.objects.all()
