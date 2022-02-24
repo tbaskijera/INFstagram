@@ -1,11 +1,9 @@
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.shortcuts import  render, redirect, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import  render, redirect
 from django.http import HttpResponse
-from django.contrib import messages
 from django.db import transaction
-from django.urls import reverse
 from datetime import datetime
 from .forms import *
 from .models import *
@@ -15,6 +13,7 @@ from .models import *
 def homepage(request):
     return HttpResponse('<html><body><h1>POCETAK INFSTAGRAM</h1></body></html>')
 
+
 @login_required
 def profil(request):
 	profile_list = Profile.objects.all()
@@ -23,17 +22,17 @@ def profil(request):
 	context = {'profile_list': profile_list, 'post_list': post_list, 'user_list': user_list}
 	return render(request, 'profil.html', context=context)
 
+
 def register_user(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
 			user = form.save()
 			login(request, user)
-			messages.success(request, "Registration successful." )
 			return redirect("main:profile")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request, 'register.html', context={"register_form":form})
+
 
 def login_user(request):
 	if request.method == "POST":
@@ -44,18 +43,15 @@ def login_user(request):
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				login(request, user)
-				messages.info(request, "You are now logged in as {username}.")
 				return redirect("main:profile")
-			else:
-				messages.error(request,"Invalid username or password.")
-		else:
-			messages.error(request,"Invalid username or password.")
 	form = AuthenticationForm()
 	return render(request, 'login.html' , context={"login_form":form})
 
+
 def logout_view(request):
 	logout(request)
-	return HttpResponseRedirect('/login')
+	return redirect('/login')
+
 
 @login_required
 def password_change(request):
@@ -83,10 +79,7 @@ def edit_profile(request):
         profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if profile_form.is_valid():
             profile_form.save()
-            messages.success(request, ('Your profile was successfully updated!'))
             return redirect('/profile')
-        else:
-            messages.error(request, ('Please correct the error below.'))
     else:
         profile_form = EditProfileForm(instance=request.user.profile)
     return render(request, 'edit_profile.html', { 'profile_form': profile_form })
@@ -94,9 +87,6 @@ def edit_profile(request):
 
 def NewPost(request):
 	files_objs = []
-	posts = Post.objects.all()
-	obj = request.POST.get('likes')
-
 	if request.method == 'POST':
 		form = NewPostForm(request.POST, request.FILES, instance=request.user.profile)
 		if form.is_valid():
@@ -147,8 +137,7 @@ def like(request, post_id):
 
 	post.likes = current_likes
 	post.save()
-
-	return HttpResponseRedirect(reverse('main:home'))
+	return redirect('main:home')
 
 
 @login_required
@@ -169,11 +158,12 @@ def comment(request, post_id):
 	context = {'user':user, 'form':form, 'post_id': post_id}
 	return render(request, 'comment.html', context)
 
+
 def delete_comment(request, k_id):
 	user = request.user
 	comment = Comment.objects.get(id=k_id)
 	Comment.objects.filter(user=user, comment=comment).delete()
-	return HttpResponseRedirect(reverse('main:home'))
+	return redirect('main:home')
 
 
 def redirect_view(request):
