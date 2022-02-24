@@ -34,7 +34,6 @@ urlpatterns = [
     path('profile', views_main.profil, name='profile'),
     path('profile/newpost/', views_main.NewPost, name='newpost'),
     path('home', views_main.home, name='home'),
-    # dode greska u testu jer se zove isto ko ovaj gore p je dodano redirect
     path('', views_main.redirect_view, name='home_redirect'),
     path('<int:post_id>/like', views_main.like, name='postlike'),
     path('<int:post_id>/comm', views_main.comment, name='postcomm'),
