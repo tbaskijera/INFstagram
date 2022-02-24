@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
 from .models import *
 
 
@@ -8,15 +9,13 @@ from .models import *
 
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
-	name = forms.CharField()
-	surname = forms.CharField()
-	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))
-	#profile_picture = forms.ImageField(upload_to = "images/")      
-	#bio = forms.CharField( max_length = "260", widget=forms.Textarea(attrs={'cols': 40, 'rows': 6}))                                     
+	first_name = forms.CharField()
+	last_name = forms.CharField()
+	date_field = forms.DateField( widget=forms.TextInput(attrs={'type': 'date'}))                                   
 
 	class Meta:
 		model = User
-		fields = ("username", "name", "surname", "date_field", "email", "password1", "password2")
+		fields = ("username", "first_name", "last_name", "date_field", "email", "password1", "password2")
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
@@ -24,6 +23,7 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
 
 class ChangePasswordForm(forms.ModelForm):
 	id = forms.CharField(widget=forms.HiddenInput())
@@ -48,41 +48,24 @@ class ChangePasswordForm(forms.ModelForm):
 			self._errors['new_password'] =self.error_class(['Passwords do not match.'])
 		return self.cleaned_data
 
-class ProfileForm(forms.ModelForm):
+
+class EditProfileForm(forms.ModelForm):
+
     class Meta:
-        model = Profil
-        fields = ('bio', 'slika_profil')
-
-
-
-
+        model = Profile
+        fields = ('bio', 'profile_image')
 
 
 class NewPostForm(forms.ModelForm):
-	# slika_objava = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=True)
-	# opis_objava = forms.CharField(widget=forms.Textarea(attrs={'class': 'input is-medium'}), required=True)
+
 	class Meta:
-		model = Objava
-		fields = ('slika_objava', 'opis_objava')
+		model = Post
+		fields = ('post_image', 'post_description')
 
 
-# class CommentForm(forms.ModelForm):
-# 	comment = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea'}), required=True)
-# 	class Meta:
-# 		model = Comment
-# 		fields = ('comment')
-
-class InputForm(forms.ModelForm):
+class NewCommentForm(forms.ModelForm):
 	comment = forms.CharField(max_length=500)
-	title = forms.CharField(max_length=100)
 
 	class Meta:
-		model = Komentar
-		fields = ('comment', 'title')
-
-	# def save(self, commit=True):
-	# 	comm = super(InputForm, self).save(commit=False)
-	# 	comm.title = self.cleaned_data['comment']
-	# 	if commit:
-	# 		comm.save()
-	# 	return comm
+		model = Comment
+		fields = ('comment',)

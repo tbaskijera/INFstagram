@@ -3,8 +3,8 @@
 {% block content %}
 
 
-    <h1>{{ post.opis_objava }}</h1>
-    <p>{{ post.opis_objava}}</p>
+    <h1>{{ post.post_description }}</h1>
+    <p>{{ post.post_description}}</p>
     <hr>
     <h2>Comments</h2>
         {% for comment in post.comment_set.all %}
@@ -18,7 +18,7 @@
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <button type="submit" style="background: linear-gradient(#e66465, #9198e5); height:35px; border-radius: 16px; border: none;">Submit</button>
     </form>
 
 

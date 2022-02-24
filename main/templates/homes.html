@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-    {% for post in posts %}
-        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.opis_objava }}</a> </h2>
-        <p>{{ post.opis_objava|truncatewords:10 }}</p>
-    {% endfor %}
-{% endblock %}

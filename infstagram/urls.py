@@ -15,8 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from main import views as views_main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls'))
+    path('', include('main.urls')),
+    
+    
+    
+    
+    path('homepage', views_main.homepage, name='homepage'),
+    path('registration', views_main.register_user, name='register'),
+    path('login', views_main.login_user, name='login'),
+    path('changepassword/', views_main.password_change, name='change_password'),
+   	path('changepassword/done', views_main.password_change_done, name='change_password_done'),
+    path('updateprofile', views_main.edit_profile, name='updateprofile'),
+    path('logout', views_main.logout_view, name='logout'),
+    path('profile', views_main.profil, name='profile'),
+    path('profile/newpost/', views_main.NewPost, name='newpost'),
+    path('home', views_main.home, name='home'),
+    # dode greska u testu jer se zove isto ko ovaj gore p je dodano redirect
+    path('', views_main.redirect_view, name='home_redirect'),
+    path('<int:post_id>/like', views_main.like, name='postlike'),
+    path('<int:post_id>/comm', views_main.comment, name='postcomm'),
+    path('<int:k_id>/deletecomm', views_main.delete_comment, name='deletecomm')
 ]
